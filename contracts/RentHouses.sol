@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-// Uncomment this line to use console.log
+// Uncomment this line to use console.loghttps://github.com/Lean-b/RentHouses-smart-contra
 // import "hardhat/console.sol";
 
-contract Rent {
+contract RentHouses {
     //owner: Dirección de la billetera del propietario.
     string private ownerName; //ownerName: Nombre del dueño.
     address private renterAddress; //renter: Dirección de la billetera del inquilino.
