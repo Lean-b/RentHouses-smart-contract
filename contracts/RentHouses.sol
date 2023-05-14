@@ -33,8 +33,16 @@ contract RentHouses is Ownable {
         uint256 _rentPrice,
         string memory _startDate,
         string memory _endDate,
-        string memory _propertuAddres
-    ) {}
+        string memory _propertyAddres
+    ) {
+        ownerName = _ownerName;
+        renterAddress = _renterAddress;
+        renterName = _renterName;
+        rentPrice = _rentPrice;
+        startDate = _startDate;
+        endDate = _endDate;
+        propertyAddress = _propertyAddres;
+    }
 
     //getRenterAddress; ver la dirrecion de la billetera cliente
     function getRenterAddress(
