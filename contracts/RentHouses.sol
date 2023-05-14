@@ -16,12 +16,13 @@ contract RentHouses is Ownable {
     string private startDate; //startDate: Fecha de inicio del contrato de alquiler.
     string private endDate; //endDate: Fecha de finalización del contrato de alquiler.
     string private propertyAddress; //propertyAddress: Dirección de la propiedad que se está alquilando.
+
     bool private isContractActive; //isContractActive: Variable booleana que indica si el contrato está activo o no.
     bool private rentaPaid; //rentPaid: Variable booleana que indica si el inquilino ha pagado el alquiler o no.
     bool private depositPaid; //depositPaid: Variable booleana que indica si el inquilino ha pagado el depósito de garantía o no.
     bool private ownerApproval; //ownerApproval: Variable booleana que indica si el propietario ha aprobado el contrato de alquiler o no.
 
-    mapping(address => mapping(address => uint256)) private balances;
+    mapping(address => mapping(address => uint256)) private balance;
 
     event Withdraw(address indexed from, uint256 amount);
     event PayRent(address indexed from, address indexed to, uint256 amount);
@@ -47,44 +48,42 @@ contract RentHouses is Ownable {
     //getRenterAddress; ver la dirrecion de la billetera cliente
     function getRenterAddress(
         address _renterAddress
-    ) public view returns (address) {
+    ) public pure returns (address) {
         return _renterAddress;
     }
 
     //getRenterName; ver el nombre del inquilino
     function getRenterName(
         string memory _renterName
-    ) public view returns (string memory) {
+    ) public pure returns (string memory) {
         return _renterName;
     }
 
     //getOwnerName; ver el nombre del propietario
     function getOwnerName(
         string memory _ownerName
-    ) public view returns (string memory) {
+    ) public pure returns (string memory) {
         return _ownerName;
     }
 
     //getRentDuration: ver la duracion del contrato
 
     //getRentPrice; ver precio de alquiler
-    function getRentPrice() public view returns (uint256) {
-        return;
+    function getRentPrice(uint256 _rentPrice) public pure returns (uint256) {
+        return _rentPrice;
     }
-
-    //Modificar el precio del alquiler
-
-    //Actualizar el tiempo del contrato
 
     //Withdraw retirar valor del dinero
 
     //getBalance; cantidad de ether
-    function getBalance() private view returns (uint256) {
+    function getBalance() private view onlyOwner returns (uint256) {
         return address(this).balance;
     }
 
     //setRentPrice(uint _rentPrice): Función para que el propietario establezca el precio del alquiler.
-    function setRentPrice(uint _rentPrice) private {}
+    function setRentPrice(uint _rentPrice) private onlyOwner {
+        rentPrice = _rentPrice;
+    }
 
     //setRentDuration(uint _rentDuration): Función para que el propietario establezca la duración del contrato de alquiler.
     function setRentDuration(uint _rentDuration) private {}
@@ -108,12 +107,13 @@ contract RentHouses is Ownable {
     function approveContract() private {}
 
     //getPropertyAddress(): Función para obtener la dirección de la propiedad que se está alquilando.
-    function getPropertyAddress() public view returns (string memory) {
-        return;
+    function getPropertyAddress(
+        string memory _propertyAddress
+    ) public pure returns (string memory) {
+        return _propertyAddress;
     }
 
-    //getPropertyDetails(): Función para obtener detalles adicionales sobre la propiedad.
-    function getPropertyDeta() public view returns (string memory) {
-        return;
-    }
+    //Modificar el precio del alquiler
+
+    //Actualizar el tiempo del contrato
 }
