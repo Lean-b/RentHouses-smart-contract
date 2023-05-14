@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-// Uncomment this line to use console.log 
+// Uncomment this line to use console.log
 // import "hardhat/console.sol";
 
 import "./Ownable.sol";
 
-contract RentHouses is Ownable{
+contract RentHouses is Ownable {
     string private ownerName; //ownerName: Nombre del dueño.
     address private renterAddress; //renter: Dirección de la billetera del inquilino.
     string private renterName; //renterName: Nombre del inquilino
     uint256 private rentPrice; //rentPrice: Precio del alquiler.
     uint256 private rentDuration; //rentDuration: Duración del contrato de alquiler acordado entre el propietario y el inquilino.
-    uint256 private deposit; //deposit: Monto del depósito de garantía acordado entre el propietario y el inquilino.
+    //uint256 private deposit; //deposit: Monto del depósito de garantía acordado entre el propietario y el inquilino.
     string private startDate; //startDate: Fecha de inicio del contrato de alquiler.
     string private endDate; //endDate: Fecha de finalización del contrato de alquiler.
     string private propertyAddress; //propertyAddress: Dirección de la propiedad que se está alquilando.
@@ -25,6 +25,16 @@ contract RentHouses is Ownable{
 
     event Withdraw(address indexed from, uint256 amount);
     event PayRent(address indexed from, address indexed to, uint256 amount);
+
+    constructor(
+        string memory _ownerName,
+        address _renterAddress,
+        string memory _renterName,
+        uint256 _rentPrice,
+        string memory _startDate,
+        string memory _endDate,
+        string memory _propertuAddres
+    ) {}
 
     //getRenterAddress; ver la dirrecion de la billetera cliente
     function getRenterAddress(
