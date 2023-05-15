@@ -22,35 +22,30 @@ contract RentHouses is Ownable {
     bool private depositPaid; //depositPaid: Variable booleana que indica si el inquilino ha pagado el depósito de garantía o no.
     bool private ownerApproval; //ownerApproval: Variable booleana que indica si el propietario ha aprobado el contrato de alquiler o no.
 
-    mapping(address => mapping(address => uint256)) private balance;
+    mapping(address =>  uint256) private balance;
 
     event Withdraw(address indexed from, uint256 amount);
-    event PayRent(address indexed from, address indexed to, uint256 amount);
+    //event PayRent(address indexed from, address indexed to, uint256 amount);
 
     constructor(
         string memory _ownerName,
-        address _renterAddress,
         string memory _renterName,
+        address _renterAddress,
         uint256 _rentPrice,
         string memory _startDate,
         string memory _endDate,
         string memory _propertyAddres
     ) {
         ownerName = _ownerName;
-        renterAddress = _renterAddress;
         renterName = _renterName;
+        renterAddress = _renterAddress;
         rentPrice = _rentPrice;
         startDate = _startDate;
         endDate = _endDate;
         propertyAddress = _propertyAddres;
     }
 
-    //getRenterAddress; ver la dirrecion de la billetera cliente
-    function getRenterAddress(
-        address _renterAddress
-    ) public pure returns (address) {
-        return _renterAddress;
-    }
+
 
     //getRenterName; ver el nombre del inquilino
     function getRenterName(
@@ -66,45 +61,20 @@ contract RentHouses is Ownable {
         return _ownerName;
     }
 
-    //getRentDuration: ver la duracion del contrato
-
     //getRentPrice; ver precio de alquiler
     function getRentPrice(uint256 _rentPrice) public pure returns (uint256) {
         return _rentPrice;
     }
 
-    //Withdraw retirar valor del dinero
-
     //getBalance; cantidad de ether
-    function getBalance() private view onlyOwner returns (uint256) {
+    function getBalance() public view onlyOwner returns (uint256) {
         return address(this).balance;
     }
 
     //setRentPrice(uint _rentPrice): Función para que el propietario establezca el precio del alquiler.
-    function setRentPrice(uint _rentPrice) private onlyOwner {
+    function setRentPrice(uint _rentPrice) public onlyOwner {
         rentPrice = _rentPrice;
     }
-
-    //setRentDuration(uint _rentDuration): Función para que el propietario establezca la duración del contrato de alquiler.
-    function setRentDuration(uint _rentDuration) private {}
-
-    //setDeposit(uint _deposit): Función para que el inquilino establezca el depósito de garantía.
-    function setDeposit(uint _deposit) private {}
-
-    //signContract(): Función para que el propietario e inquilino firmen el contrato de alquiler.
-    function singContract() private {}
-
-    //payRent(): Función para que el inquilino realice el pago del alquiler acordado.
-    function payRent() public payable {}
-
-    //refundDeposit(): Función para que el propietario devuelva el depósito de garantía al inquilino al finalizar el contrato.
-    function refunDeposit() private {}
-
-    //terminateContract(): Función para que el propietario e inquilino finalicen el contrato de alquiler antes de la fecha de finalización.
-    function terminateContract() public {}
-
-    //approveContract(): Función para que el propietario apruebe el contrato de alquiler.
-    function approveContract() private {}
 
     //getPropertyAddress(): Función para obtener la dirección de la propiedad que se está alquilando.
     function getPropertyAddress(
@@ -113,7 +83,32 @@ contract RentHouses is Ownable {
         return _propertyAddress;
     }
 
-    //Modificar el precio del alquiler
+    //payRent(): Función para que el inquilino realice el pago del alquiler
+    function payRent() public payable returns (bool){
+        //require renter address
+        require(renterAddress == msg.sender,"Only the renter can pay the rent");
+        balance[msg.sender] += msg.value;
+        return true;
+    }
 
+    //Withdraw retirar valor del dinero
+    function winthdraw(uint256 _amount)public onlyOwner {
+        require(_amount <= address(this).balance, "Insufficient ether balance");
+        payable(msg.sender).transfer(_amount);
+    }
+
+
+
+    //terminateContract(): Función para que el propietario e inquilino finalicen el contrato de alquiler antes de la fecha de finalización.
+    function terminateContract() public {
+        //require address owner and address renter
+    }
+
+    //setRentDuration(uint _rentDuration): Función para que el propietario establezca la duración del contrato de alquiler.
+    function setRentDuration(uint _rentDuration) public {
+        //for example 2 years
+    }
+
+    //getRentDuration: ver la duracion del contrato
     //Actualizar el tiempo del contrato
 }
