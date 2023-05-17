@@ -15,8 +15,6 @@ contract RentHouses is Ownable {
     string private startDate; //startDate: Fecha de inicio del contrato de alquiler.
     string private endDate; //endDate: Fecha de finalización del contrato de alquiler.
     string private propertyAddress; //propertyAddress: Dirección de la propiedad que se está alquilando.
-    bool private isContractActive; //isContractActive: Variable booleana que indica si el contrato está activo o no.
-    bool private ownerApproval; //ownerApproval: Variable booleana que indica si el propietario ha aprobado el contrato de alquiler o no.
 
     mapping(address =>  uint256) private balance;
 
@@ -30,38 +28,34 @@ contract RentHouses is Ownable {
         uint256 _rentPrice,
         string memory _startDate,
         string memory _endDate,
-        string memory _propertyAddres,
-        uint256 _rentDurationYear
+        string memory _propertyAddress,
+        uint256 _rentDurationYears
     ) {
         ownerName = _ownerName;
         renterName = _renterName;
         renterAddress = _renterAddress;
-        rentPrice = _rentPrice;
+        rentPrice = _rentPrice * 1e18;
         startDate = _startDate;
         endDate = _endDate;
-        propertyAddress = _propertyAddres;
-        rentDurationYear = _rentDurationYear;
+        propertyAddress = _propertyAddress;
+        rentDurationYear = _rentDurationYears * (365 days);
     }
 
 
 
     //getRenterName; ver el nombre del inquilino
-    function getRenterName(
-        string memory _renterName
-    ) public pure returns (string memory) {
-        return _renterName;
+    function getRenterName() public view returns (string memory) {
+        return renterName;
     }
 
     //getOwnerName; ver el nombre del propietario
-    function getOwnerName(
-        string memory _ownerName
-    ) public pure returns (string memory) {
-        return _ownerName;
+    function getOwnerName() public view returns (string memory) {
+        return ownerName;
     }
 
     //getRentPrice; ver precio de alquiler
-    function getRentPrice(uint256 _rentPrice) public pure returns (uint256) {
-        return _rentPrice;
+    function getRentPrice() public view returns (uint256) {
+        return rentPrice * 1e18;
     }
 
     //getBalance; cantidad de ether
@@ -71,21 +65,19 @@ contract RentHouses is Ownable {
 
     //setRentPrice(uint _rentPrice): Función para que el propietario establezca el precio del alquiler.
     function setRentPrice(uint _rentPrice) public onlyOwner {
-        rentPrice = _rentPrice;
+        rentPrice = _rentPrice * 1e18;
     }
 
     //getPropertyAddress(): Función para obtener la dirección de la propiedad que se está alquilando.
-    function getPropertyAddress(
-        string memory _propertyAddress
-    ) public pure returns (string memory) {
-        return _propertyAddress;
+    function getPropertyAddress() public view returns (string memory) {
+        return propertyAddress;
     }
 
     //payRent(): Función para que el inquilino realice el pago del alquiler
-    function payRent() public payable returns (bool){
+    function payRent(uint256 _amount,address _renterAddress) public payable returns (bool){
         //require renter address
-        require(renterAddress == msg.sender,"Only the renter can pay the rent");
-        balance[msg.sender] += msg.value;
+        require(renterAddress == _renterAddress,"Only the renter can pay the rent");
+        balance[msg.sender] += _amount;
         return true;
     }
 
@@ -97,14 +89,12 @@ contract RentHouses is Ownable {
 
 
     //getRentDuration: ver la duracion del contrato
-    function getRentDuration(uint256 _rentDurationYear) public pure returns (uint256) {
-        return _rentDurationYear;
+    function getRentDuration() public view returns (uint256) {
+        return rentDurationYear / (365 days);
     }
 
     //Actualizar el tiempo del contrato
-    function updateTime(uint256 _rentDurationYear)public onlyOwner {
-        rentDurationYear = _rentDurationYear;
+    function updateTime(uint256 _rentDurationYears)public onlyOwner {
+        rentDurationYear = _rentDurationYears * (365 days);
     }
-
-
 }
